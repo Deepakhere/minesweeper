@@ -1,0 +1,36 @@
+{
+  "play": "Play",
+  "rules": "Rules",
+  "board_size": "Board Size",
+  "mines_percentage": "Mines Percentage",
+  "minesweeper": "Minesweeper",
+  "difficulty": "Difficulty",
+  "change_difficulty": "Change Difficulty",
+  "common": {
+    "labels": {
+      "play": "Play",
+      "rules": "Rules",
+      "board_size": "Board Size",
+      "mines_percentage": "Mines Percentage",
+      "minesweeper": "Minesweeper",
+      "difficulty": "Difficulty",
+      "minesweeper_game_rules": "Minesweeper Game Rules",
+      "objective": "Objective",
+      "clear_the_board_without_detonating_any_mines": "Clear the board without detonating any mines",
+      "gameplay": "Gameplay",
+      "winning": "Winning",
+      "losing": "Losing",
+      "mines_count": "Mines Count",
+      "start_over": "Start Over",
+      "game_over": "Game Over",
+      "game_won": "Game Won",
+      "game_lost": "Game Lost",
+      "you_won": "You Won",
+      "you_lost": "You Lost",
+      "congratulations": "Congratulations",
+      "change_difficulty": "Change Difficulty",
+      "pause": "Pause",
+      "resume": "Resume"
+    }
+  }
+}

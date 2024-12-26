@@ -1,0 +1,12 @@
+{
+  "common": {
+    "labels": {
+      "play": "play",
+      "rules": "Reglas",
+      "board_size": "Tamaño del Tablero",
+      "mines_percentage": "Porcentaje de Minas",
+      "minesweeper": "MinesWeeper",
+      "difficulty": "Dificultad"
+    }
+  }
+}
