@@ -23,9 +23,14 @@ const useCustomPageController = () => {
     navigate("../");
   };
 
+  const onBack = () => {
+    navigate("../");
+  };
+
   return {
     boardSize,
     minesCount,
+    onBack,
     setBoardSize,
     setMinesCount,
     handleStartGame,
@@ -33,3 +38,4 @@ const useCustomPageController = () => {
   };
 };
 export default useCustomPageController;
+

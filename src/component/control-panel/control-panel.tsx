@@ -37,7 +37,7 @@ const ControlPanel = ({
   handleModalClose: () => void;
 }) => {
   const navigate = useNavigate();
-  const isWon = gameStatus === "win";
+  const isWon = gameStatus === "won";
   const confettiRef = useRef<HTMLDivElement>(null);
   const [modalDimensions, setModalDimensions] = useState({
     width: 0,

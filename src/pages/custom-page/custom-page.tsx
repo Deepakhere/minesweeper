@@ -1,15 +1,19 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Slider } from "antd";
+import { Button, Slider, Typography } from "antd";
 
 import useCustomPageController from "./custom-page-controller";
 import MinesweeperRules from "../../component/rules-component";
+import { HomeOutlined } from "@ant-design/icons";
+
+const { Title } = Typography;
 
 const CustomPage: React.FC = () => {
   const { t } = useTranslation();
   const {
     boardSize,
     minesCount,
+    onBack,
     setBoardSize,
     handleStartGame,
     setMinesCount,
@@ -20,9 +24,24 @@ const CustomPage: React.FC = () => {
       <div className="minesweeper-custom-page-card">
         <div className="minesweeper-custom-page-difficulty">
           <div className="mines-header">
-            <div className="minesweeper-custom-page-title">
-              {t("common.labels.minesweeper")}
-            </div>
+            <Button
+              icon={
+                <HomeOutlined style={{ color: "#999", fontSize: "18px" }} />
+              }
+              onClick={onBack}
+              type="text"
+            />
+            <Title
+              level={2}
+              style={{
+                margin: 0,
+                textAlign: "center",
+                flexGrow: 1,
+                color: "#999",
+              }}
+            >
+              {t("minesweeper")}
+            </Title>
             <MinesweeperRules />
           </div>
 
@@ -108,7 +127,7 @@ const CustomPage: React.FC = () => {
                 }}
                 railStyle={{
                   background: "#333",
-                  color:"#fff",
+                  color: "#fff",
                   height: "4px",
                 }}
                 handleStyle={{
@@ -160,3 +179,4 @@ const CustomPage: React.FC = () => {
 };
 
 export default CustomPage;
+
