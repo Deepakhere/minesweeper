@@ -66,12 +66,12 @@ Minesweeper challenges players to clear a rectangular board containing hidden mi
 Most versions offer multiple difficulty settings:
 
 - **Beginner**
-  - 9x9 board
+  - 8x9 board
   - 10 mines
   - Best for learning the game
 
 - **Intermediate**
-  - 16x16 board
+  - 15x15 board
   - 40 mines
   - Balanced challenge
 

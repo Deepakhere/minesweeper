@@ -337,12 +337,14 @@ const useMinesweeperGameController = () => {
     } else {
       initializeBoard();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (board.length > 0) {
       saveGameState();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board, revealedCells, flaggedCells, flagCount, gameStatus, location]);
 
   useEffect(() => {
@@ -352,6 +354,8 @@ const useMinesweeperGameController = () => {
       }
     }, 1000);
     return () => clearInterval(interval);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer, isPaused, gameStatus, loading]);
 
   useEffect(() => {
@@ -393,3 +397,4 @@ const useMinesweeperGameController = () => {
 };
 
 export default useMinesweeperGameController;
+
