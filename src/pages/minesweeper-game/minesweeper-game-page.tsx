@@ -53,6 +53,7 @@ const MinesweeperGamePage = () => {
                   flexGrow: 1,
                   color: "#999",
                 }}
+                className="mines-title"
               >
                 {t("minesweeper")}
               </Title>

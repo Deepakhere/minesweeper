@@ -13,6 +13,7 @@
     "@types/react-dom": "18.2.18",
     "antd": "5.20.6",
     "cra-template-typescript": "1.2.0",
+    "crypto-js": "^4.2.0",
     "i18next": "21.6.16",
     "i18next-browser-languagedetector": "6.1.4",
     "i18next-http-backend": "1.4.0",
@@ -49,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@types/i18next": "^13.0.0"
   }
 }

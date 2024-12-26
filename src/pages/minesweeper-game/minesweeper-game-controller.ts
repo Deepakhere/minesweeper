@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import CryptoJS from "crypto-js";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -6,6 +7,8 @@ type Cell = {
   isMine: boolean;
   adjacentMines: number;
 };
+
+const SECRET_KEY = "minesweeper-secret-key";
 
 const useMinesweeperGameController = () => {
   const { t } = useTranslation();
@@ -18,10 +21,15 @@ const useMinesweeperGameController = () => {
 
   const loadInitialState = () => {
     const savedGameStatus = localStorage.getItem("gameStatus");
+    const encryptedBoard = localStorage.getItem("board");
 
     if (savedGameStatus === "playing") {
       return {
-        board: JSON.parse(localStorage.getItem("board") || "[]"),
+        board: JSON.parse(
+          CryptoJS.AES.decrypt(encryptedBoard || "[]", SECRET_KEY).toString(
+            CryptoJS.enc.Utf8
+          )
+        ),
         revealedCells: new Set(
           JSON.parse(localStorage.getItem("revealedCells") || "[]")
         ),
@@ -59,7 +67,12 @@ const useMinesweeperGameController = () => {
 
   const saveGameState = () => {
     if (gameStatus === "playing") {
-      localStorage.setItem("board", JSON.stringify(board));
+      const encryptedBoard = CryptoJS.AES.encrypt(
+        JSON.stringify(board),
+        SECRET_KEY
+      ).toString();
+
+      localStorage.setItem("board", encryptedBoard);
       localStorage.setItem(
         "revealedCells",
         JSON.stringify(Array.from(revealedCells))
@@ -123,7 +136,13 @@ const useMinesweeperGameController = () => {
     setFlaggedCells(new Set());
     setGameStatus("playing");
     setFlagCount(0);
-    localStorage.setItem("board", JSON.stringify(newBoard));
+
+    const encryptedBoard = CryptoJS.AES.encrypt(
+      JSON.stringify(newBoard),
+      SECRET_KEY
+    ).toString();
+
+    localStorage.setItem("board", encryptedBoard);
     localStorage.setItem("gameStatus", "playing");
   };
 
@@ -173,58 +192,37 @@ const useMinesweeperGameController = () => {
     }
 
     const newRevealedCells = new Set(revealedCells);
-    newRevealedCells.add(`${row},${col}`);
+
+    const floodFill = (r: number, c: number) => {
+      if (
+        r < 0 ||
+        r >= BOARD_SIZE ||
+        c < 0 ||
+        c >= BOARD_SIZE ||
+        newRevealedCells.has(`${r},${c}`) ||
+        flaggedCells.has(`${r},${c}`)
+      ) {
+        return;
+      }
+
+      newRevealedCells.add(`${r},${c}`);
+
+      if (board[r][c].adjacentMines === 0) {
+        for (let dx = -1; dx <= 1; dx++) {
+          for (let dy = -1; dy <= 1; dy++) {
+            if (dx === 0 && dy === 0) continue;
+            floodFill(r + dx, c + dy);
+          }
+        }
+      }
+    };
 
     if (board[row][col].isMine) {
       setGameStatus("lost");
       return;
     }
 
-    if (board[row][col].adjacentMines === 0) {
-      const directions = [
-        [-1, -1],
-        [-1, 0],
-        [-1, 1],
-        [0, -1],
-        [0, 1],
-        [1, -1],
-        [1, 0],
-        [1, 1],
-      ];
-
-      directions.forEach(([dx, dy]) => {
-        const newRow = row + dx;
-        const newCol = col + dy;
-
-        if (
-          newRow >= 0 &&
-          newRow < BOARD_SIZE &&
-          newCol >= 0 &&
-          newCol < BOARD_SIZE &&
-          !newRevealedCells.has(`${newRow},${newCol}`)
-        ) {
-          board[newRow][newCol].isMine
-            ? revealCell(newRow, newCol)
-            : newRevealedCells.add(`${newRow},${newCol}`);
-        }
-      });
-    }
-
-    // if (
-    //   newRow >= 0 &&
-    //   newRow < BOARD_SIZE &&
-    //   newCol >= 0 &&
-    //   newCol < BOARD_SIZE &&
-    //   !newRevealedCells.has(`${newRow},${newCol}`)
-    // ) {
-    //   if (!board[newRow][newCol].isMine) {
-    //     newRevealedCells.add(`${newRow},${newCol}`);
-    //     if (board[newRow][newCol].adjacentMines === 0) {
-    //       revealCell(newRow, newCol);
-    //     }
-    //   }
-    // }
-
+    floodFill(row, col);
     setRevealedCells(newRevealedCells);
 
     const totalCells = BOARD_SIZE * BOARD_SIZE;
@@ -232,9 +230,7 @@ const useMinesweeperGameController = () => {
     if (newRevealedCells.size === safeCells) {
       setGameStatus("won");
     }
-    setIsPaused(false);
   };
-
   const toggleFlag = (row: number, col: number, e: React.MouseEvent) => {
     e.preventDefault();
     if (gameStatus !== "playing" || revealedCells.has(`${row},${col}`)) return;
@@ -397,4 +393,3 @@ const useMinesweeperGameController = () => {
 };
 
 export default useMinesweeperGameController;
-

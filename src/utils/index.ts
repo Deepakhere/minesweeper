@@ -64,3 +64,81 @@ export class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+
+export const generateKey = async (): Promise<CryptoKey> => {
+  // Generate a cryptographic key for AES-GCM encryption
+  return await window.crypto.subtle.generateKey(
+    {
+      name: "AES-GCM",
+      length: 256,
+    },
+    true,
+    ["encrypt", "decrypt"]
+  );
+};
+ 
+export const encryptData = async (
+  data: any,
+  key: CryptoKey
+): Promise<string> => {
+  // Convert data to JSON string
+  const encodedData = new TextEncoder().encode(JSON.stringify(data));
+ 
+  // Generate a random initialization vector (IV)
+  const iv = window.crypto.getRandomValues(new Uint8Array(12));
+ 
+  // Encrypt the data
+  const encryptedContent = await window.crypto.subtle.encrypt(
+    {
+      name: "AES-GCM",
+      iv: iv,
+    },
+    key,
+    encodedData
+  );
+ 
+  // Combine IV and encrypted data using a more compatible method
+  const combinedData = new Uint8Array(iv.length + encryptedContent.byteLength);
+  combinedData.set(iv, 0);
+  combinedData.set(new Uint8Array(encryptedContent), iv.length);
+ 
+  // Convert to base64 for storage
+  return btoa(String.fromCharCode.apply(null, Array.from(combinedData)));
+};
+ 
+export const decryptData = async (
+  encryptedBase64: string,
+  key: CryptoKey
+): Promise<any> => {
+  try {
+    // Convert base64 to Uint8Array
+    const encryptedDataWithIV = new Uint8Array(
+      atob(encryptedBase64)
+        .split("")
+        .map((char) => char.charCodeAt(0))
+    );
+ 
+    // Extract IV (first 12 bytes)
+    const iv = encryptedDataWithIV.slice(0, 12);
+    const encryptedContent = encryptedDataWithIV.slice(12);
+ 
+    // Decrypt the data
+    const decryptedContent = await window.crypto.subtle.decrypt(
+      {
+        name: "AES-GCM",
+        iv: iv,
+      },
+      key,
+      encryptedContent
+    );
+ 
+    // Convert decrypted data back to string and parse JSON
+    const decoder = new TextDecoder();
+    return JSON.parse(decoder.decode(decryptedContent));
+  } catch (error) {
+    // This catch block will trigger if:
+    // 1. The key is incorrect
+    // 2. The data has been tampered with
+    throw new Error("Failed to decrypt data.");
+  }
+};

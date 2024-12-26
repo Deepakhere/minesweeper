@@ -7,12 +7,14 @@ import React, {
 } from "react";
 import "./i18n";
 import "./styles/index.css";
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, theme, Layout } from "antd";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Spinner from "./component/spinner";
 import ToggleSwitch from "./component/toggle/toggle-theme";
 import { THEME_PREFERENCE, openNotificationWithIcon, lazyRetry } from "./utils";
+
+const { Content } = Layout;
 
 const MinesweeperHomePage = lazy(() =>
   lazyRetry(() => import("./pages/minesweeper-home"))
@@ -66,7 +68,7 @@ const App = () => {
     if (storedTheme) {
       return storedTheme === THEME_PREFERENCE.DARK_MODE;
     }
-    return true;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
   };
 
   const [isDarkMode, setIsDarkMode] = useState(getInitialTheme);
@@ -84,11 +86,13 @@ const App = () => {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark-theme");
+      document.documentElement.classList.remove("light-theme");
       localStorage.setItem(
         THEME_PREFERENCE.THEME_KEY,
         THEME_PREFERENCE.DARK_MODE
       );
     } else {
+      document.documentElement.classList.add("light-theme");
       document.documentElement.classList.remove("dark-theme");
       localStorage.setItem(
         THEME_PREFERENCE.THEME_KEY,
@@ -97,18 +101,30 @@ const App = () => {
     }
   }, [isDarkMode]);
 
+  const themeConfig = {
+    algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+    token: {
+      colorBgContainer: isDarkMode ? "#141414" : "#ffffff",
+      colorPrimary: "#1890ff",
+    },
+    components: {
+      Layout: {
+        bodyBg: isDarkMode ? "#141414" : "#ffffff",
+      },
+    },
+  };
+
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
-      }}
-    >
-      <div className="app">
-        <ToggleSwitch isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="main-content">
+    <ConfigProvider theme={themeConfig}>
+      <Layout className={`app ${isDarkMode ? "dark-theme" : "light-theme"}`}>
+        <Content className="main-content">
+          <ToggleSwitch
+            isDarkMode={isDarkMode}
+            toggleDarkMode={toggleDarkMode}
+          />
           <RouterProvider router={router} />
-        </main>
-      </div>
+        </Content>
+      </Layout>
     </ConfigProvider>
   );
 };

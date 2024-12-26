@@ -71,32 +71,32 @@ const ControlPanel = ({
         </div>
 
         <Button
-          type="default"
-          icon={<ReloadOutlined />}
-          style={{ marginBottom: "10px", background: "#333", color: "#fff" }}
           block
+          type="default"
+          className="pause-button"
+          icon={isPaused ? <PlayCircleOutlined /> : <PauseOutlined />}
+          onClick={handlePauseResume}
+        >
+          {isPaused ? t("common.labels.resume") : t("common.labels.pause")}
+        </Button>
+
+        <Button
+          block
+          type="default"
+          className="start-over-button"
+          icon={<ReloadOutlined />}
           onClick={handleStartOverClick}
         >
           {t("common.labels.start_over")}
         </Button>
 
         <Button
-          type="default"
-          style={{ marginBottom: "10px", background: "#333", color: "#fff" }}
           block
+          type="default"
+          className="change-difficulty-button"
           onClick={onDifficultyChange}
         >
           {t("common.labels.change_difficulty")}
-        </Button>
-
-        <Button
-          block
-          type="default"
-          icon={isPaused ? <PlayCircleOutlined /> : <PauseOutlined />}
-          style={{ background: "#333", color: "#fff" }}
-          onClick={handlePauseResume}
-        >
-          {isPaused ? t("common.labels.resume") : t("common.labels.pause")}
         </Button>
       </div>
 

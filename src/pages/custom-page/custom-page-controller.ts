@@ -38,4 +38,3 @@ const useCustomPageController = () => {
   };
 };
 export default useCustomPageController;
-

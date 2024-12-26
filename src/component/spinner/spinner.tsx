@@ -1,43 +1,65 @@
+import { Layout } from "antd";
 import React, { useState, useEffect } from "react";
 
 const Spinner = () => {
   const [isExploded, setIsExploded] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsExploded(true), 2000);
+    const themePreference = localStorage.getItem("app-theme-preference");
+    if (themePreference === "dark") {
+      setIsDarkMode(true);
+    } else {
+      setIsDarkMode(false);
+    }
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="loader-container">
-      <div className={`mine ${isExploded ? "exploded" : ""}`}>
-        <div className="mine-body"></div>
-        {[...Array(12)].map((_, i) => (
-          <div key={i} className="spike"></div>
-        ))}
-        {isExploded && (
-          <>
-            {[...Array(20)].map((_, i) => (
-              <div key={i} className="particle"></div>
-            ))}
-            {[...Array(15)].map((_, i) => (
-              <div key={i} className="smoke"></div>
-            ))}
-          </>
-        )}
-      </div>
-      <div className={`loading-text ${isExploded ? "completed" : ""}`}>
-        {isExploded ? "READY!" : "LOADING"}
-      </div>
+    <Layout>
+      <div
+        className={`loader-container ${
+          isDarkMode ? "dark-theme" : "light-theme"
+        }`}
+      >
+        <div className={`mine ${isExploded ? "exploded" : ""}`}>
+          <div className="mine-body"></div>
+          {[...Array(12)].map((_, i) => (
+            <div key={i} className="spike"></div>
+          ))}
+          {isExploded && (
+            <>
+              {[...Array(20)].map((_, i) => (
+                <div key={i} className="particle"></div>
+              ))}
+              {[...Array(15)].map((_, i) => (
+                <div key={i} className="smoke"></div>
+              ))}
+            </>
+          )}
+        </div>
+        <div className={`loading-text ${isExploded ? "completed" : ""}`}>
+          {isExploded ? "READY!" : "LOADING"}
+        </div>
 
-      <style>{`
+        <style>{`
+        .light-theme {
+          .loader-container {
+            background-color: #ffffff;
+          }
+        }
+        .dark-theme {
+          .loader-container {
+            background-color: #1a1a1a;
+          }
+        }
         .loader-container {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
           min-height: 100vh;
-          background-color: #1a1a1a;
           overflow: hidden;
         }
 
@@ -209,7 +231,8 @@ const Spinner = () => {
           )
           .join("\n")}
       `}</style>
-    </div>
+      </div>
+    </Layout>
   );
 };
 

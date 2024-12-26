@@ -30,10 +30,19 @@ const MinesweeperHomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    localStorage.clear();
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
+
+    localStorage.removeItem("gameStatus");
+    localStorage.removeItem("board");
+    localStorage.removeItem("revealedCells");
+    localStorage.removeItem("flaggedCells");
+    localStorage.removeItem("flagCount");
+    localStorage.removeItem("boardSize");
+    localStorage.removeItem("minesCount");
+    localStorage.removeItem("timer");
+    localStorage.removeItem("isPaused");
 
     return () => clearTimeout(timer);
   }, []);
@@ -57,6 +66,7 @@ const MinesweeperHomePage: React.FC = () => {
                     className="minesweeper-home-card"
                     style={{
                       borderColor: item.color,
+                      borderWidth: "2px",
                       background: "rgba(255, 255, 255, 0.05)",
                     }}
                     onClick={() => {
@@ -68,6 +78,8 @@ const MinesweeperHomePage: React.FC = () => {
                         margin: 0,
                         fontSize: "18px",
                         color: item.color,
+                        fontFamily: "monospace",
+                        fontWeight: "bold",
                       }}
                     >
                       {item.size === 0
@@ -78,6 +90,8 @@ const MinesweeperHomePage: React.FC = () => {
                       style={{
                         color: "#999",
                         marginTop: "5px",
+                        fontSize: "14px",
+                        fontFamily: "monospace",
                       }}
                     >
                       {item.mines}
