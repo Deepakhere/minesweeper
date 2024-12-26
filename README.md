@@ -1,46 +1,101 @@
-# Getting Started with Create React App
+# Minesweeper
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A classic puzzle game where players must clear a minefield using logic and careful deduction.
 
-## Available Scripts
+## Game Overview
 
-In the project directory, you can run:
+Minesweeper challenges players to clear a rectangular board containing hidden mines without detonating any of them. The game combines strategy, logic, and sometimes a bit of luck.
 
-### `npm start`
+## Game Rules
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Objective
+- Clear the entire board without triggering any mines
+- Reveal all safe squares while correctly identifying mine locations
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Gameplay Mechanics
 
-### `npm test`
+#### Basic Controls
+- **Left Click**: Reveal a square
+- **Right Click**: Place (or remove) a flag on a suspected mine location
+- **Double Click**: (In some versions) Reveal all adjacent squares when the correct number of flags are placed
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Square Types
+- **Numbers (1-8)**: Indicate how many mines are in the adjacent squares
+- **Empty Squares**: Reveal automatically when clicked, showing all adjacent safe squares
+- **Mines**: Game ends if clicked
+- **Flags**: Player-placed markers for suspected mine locations
 
-### `npm run build`
+### How to Play
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Starting the Game**
+   - First click is always safe
+   - The game begins when you reveal your first square
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Reading the Numbers**
+   - Each number shows the count of mines in the surrounding eight squares
+   - Use these numbers to deduce mine locations
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. **Strategic Tips**
+   - Start with corners and edges where there are fewer adjacent squares
+   - Use flags to mark confirmed mine locations
+   - Look for patterns and common configurations
 
-### `npm run eject`
+### Winning and Losing
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Victory Conditions
+- All safe squares are revealed
+- All mines are correctly flagged (optional)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Game Over
+- Occurs when clicking on a mine
+- Board reveals all mine locations
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Common Strategies
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Basic Techniques
+1. When a number touches exactly as many unopened squares as its value, all those squares must be mines
+2. When a number has all its mines flagged, all other touching squares must be safe
 
-## Learn More
+### Advanced Techniques
+- Pattern recognition for common configurations
+- Using information from multiple numbers to make deductions
+- Process of elimination with neighboring squares
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Difficulty Levels
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Most versions offer multiple difficulty settings:
+
+- **Beginner**
+  - 9x9 board
+  - 10 mines
+  - Best for learning the game
+
+- **Intermediate**
+  - 16x16 board
+  - 40 mines
+  - Balanced challenge
+
+- **Expert**
+  - 30x16 board
+  - 99 mines
+  - Maximum difficulty
+
+## Tips for Success
+
+1. Don't guess unless absolutely necessary
+2. Use flags strategically to track confirmed mine locations
+3. Take your time - there's usually no time pressure
+4. Learn common patterns to speed up your gameplay
+5. Start with easier difficulty levels to build confidence
+
+## Common Terminology
+
+- **Opening**: The first click and resulting clear area
+- **Pattern**: Common configuration of numbers and mines
+- **Chording**: Using double-click to reveal multiple squares
+- **50/50**: Situation where guessing is unavoidable
+- **Safe Square**: Square confirmed to not contain a mine
+
+---
+
+Remember, Minesweeper is a game of logic, not chance. With practice and understanding of the patterns, you can improve your success rate significantly.
